@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 function indent() {
 	c='s/^/       /'
 	case $(uname) in
@@ -18,8 +20,7 @@ if [ "$ssh_key" != "" ]; then
 	# The .ssh needs to be located in the home directory which is different to the
 	# home directory of the built machine. The symlink resolves the issue.
 	mkdir "$1/.ssh"
-	ln -s "$1/.ssh" "$HOME/.ssh"
-	echo "$ssh_key" | base64 --decode > "$HOME/.ssh/id_rsa"
+	echo "$ssh_key" | base64 --decode > "$1/.ssh/id_rsa"
 
 	IFS=',' read -ra HOST <<< "$ssh_hosts"
 	for i in "${HOST[@]}"; do
